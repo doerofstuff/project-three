@@ -48,7 +48,7 @@ class BlockController {
 
         this.server.route({
             method: 'POST',
-            path: '/block/',
+            path: '/block',
             handler: async (request, h) => {
                 console.log(request.payload)
                 var payload = request.payload 
