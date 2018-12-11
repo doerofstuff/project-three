@@ -48,15 +48,23 @@ class BlockController {
 
         this.server.route({
             method: 'POST',
-            path: '/block/',
+            path: '/block',
             handler: async (request, h) => {
                 console.log(request.payload)
                 var payload = request.payload 
-                if(payload){
-                    var blockData = encodeURIComponent(payload.body)
+                if(payload.body){
+                    var blockData = payload.body
                     let addedBlock = await this.chainDB.addBlock(new Block.Block(blockData));
                     return addedBlock;
-                } 
+                } else {
+                    let errorObj = {
+                        statusCode: 413,
+                        error: "VaLitdationError",
+                        message: "To add a block, 'body' should be sent in the data payload"
+                    }
+                    
+                    return h.response(errorObj).code(400)
+                }
             }
         });
 
